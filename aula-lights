@@ -1,0 +1,13 @@
+#!/bin/bash
+# Command-line shortcut, e.g.: ./aula-lights set --effect breathing --color 00AAFF
+#
+# Runs the command as the Aula Lights app itself (via `open`), so macOS checks
+# its Input Monitoring permission rather than your terminal's.
+APP="/Applications/Aula Lights.app"
+[ -d "$APP" ] || APP="$HOME/Applications/AulaLights.app"
+[ -d "$APP" ] || APP="/Applications/AulaLights.app"
+OUT="$(mktemp -t aula-lights)"
+trap 'rm -f "$OUT"' EXIT
+open -n -W -a "$APP" --stdout "$OUT" --stderr "$OUT" --args "$@" 2>/dev/null
+cat "$OUT"
+! grep -q '^Error:' "$OUT"
