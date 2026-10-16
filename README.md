@@ -4,7 +4,7 @@
 
 The AULA F75 is made for Windows, so on a Mac the keys at the bottom left are in the wrong place: **Alt** is where **⌘ Command** should be, and **Win** is where **⌥ Option** should be. Aula Lights fixes that with one click. It also lets you change the keyboard's lights and use the round knob in new ways.
 
-![Aula Lights](docs/effects.png)
+![Aula Lights](docs/ripple.png)
 
 ## What you get
 
@@ -12,6 +12,25 @@ The AULA F75 is made for Windows, so on a Mac the keys at the bottom left are in
 - **Light effects.** All 18 of the keyboard's light shows, in any colour, brightness and speed.
 - **Fun extras.** Light that ripples out from every key you press, a "heatmap" of the keys you use most, and a little reaction game.
 - **The knob as a dial.** Click the knob to open a ring on screen: open apps, change the volume, skip songs, and more.
+
+## The knob as a dial
+
+Turn the round knob into a dial for your whole Mac. **Click the knob** and a ring appears on screen. **Turn** to move around it and **click** to choose.
+
+| Tools | Music | Apps |
+| --- | --- | --- |
+| ![The dial's tools](docs/dial-tools.png) | ![What's playing](docs/dial-music.png) | ![Your apps](docs/dial-apps.png) |
+| Volume, keyboard lights, screen brightness, play/pause and skipping songs. Turning the knob with the ring closed controls the one you picked. | Shows the song playing in any app (Spotify, Music, YouTube in your browser…). Turn once to skip one song. | Open any app from your Dock without leaving the keyboard. |
+
+Double-click the knob to mute. When Aula Lights isn't running, the knob is the normal volume knob again.
+
+## Light and dark
+
+Aula Lights comes in **dark** and **light**, or **Auto** to follow your Mac, with six accent colours to choose from.
+
+| Dark | Light |
+| --- | --- |
+| ![Dark](docs/effects.png) | ![Light](docs/light.png) |
 
 ## How to install
 
@@ -31,6 +50,7 @@ That's it. The Mac layout keeps working after restarts and reconnects.
 - **Mac or Windows layout:** the **Mac / Windows** switch at the top right of the app.
 - **Lights:** pick an effect, a colour and a brightness at the bottom of the app. Changes are saved on the keyboard itself.
 - **The knob dial:** click the **dial button** at the top right of the app to turn it on. Then click the knob to open the ring, turn to choose, and click to pick. Double-click the knob to mute.
+- **Light or dark:** click the **coloured dot** at the top right to pick Dark, Light or Auto, and an accent colour.
 
 ## Questions
 

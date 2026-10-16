@@ -203,8 +203,16 @@ final class Dial: ObservableObject {
     /// Developer aid for snapshots: the ring in a given state, without the knob.
     func preview(apps: Bool, index: Int) {
         inApps = apps
-        let many = ProcessInfo.processInfo.environment["AULA_MANY_APPS"] != nil  // preview: a long list
-        let apps_ = many ? Dial.dockApps() + Dial.dockApps() : Dial.dockApps()
+        let env = ProcessInfo.processInfo.environment
+        let many = env["AULA_MANY_APPS"] != nil  // preview: a long list
+        // Public screenshots: standard Mac apps instead of this Mac's own Dock.
+        let demo = env["AULA_DEMO"] != nil
+            ? ["Messages", "Mail", "Music", "Notes", "Calendar", "Photos", "Maps"]
+                .map { URL(fileURLWithPath: "/System/Applications/\($0).app") }
+                .map { FileManager.default.fileExists(atPath: $0.path) ? $0 : URL(fileURLWithPath: "/Applications/Safari.app") }
+            : nil
+        let base = demo ?? Dial.dockApps()
+        let apps_ = many ? base + base : base
         items = apps ? apps_.map { .app($0) } + [.back] : Dial.mainItems
         self.index = index
         spin = index
@@ -212,6 +220,9 @@ final class Dial: ObservableObject {
     }
 
     func previewReadout() { readout = (.volume, 0.62, "62%") }
+
+    /// Public screenshots: a made-up track instead of what's really playing.
+    func previewTrack() { nowPlaying = NowPlayingInfo(title: "Northern Lights", artist: "Sample Artist", app: "com.apple.Music", playing: true) }
 
     /// Shows the track summary in the centre for these items.
     var showsTrack: Bool {

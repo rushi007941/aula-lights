@@ -1124,10 +1124,15 @@ enum Entry {
             Theme.current = Theme(dark: c.appearance != .light, accentChoice: c.accent)
             let track = ProcessInfo.processInfo.environment["AULA_TRACK"] != nil
             c.dial.preview(apps: mode == 4, index: track ? 4 : 1)
-            if track { c.dial.refreshNowPlaying(); RunLoop.main.run(until: Date().addingTimeInterval(1.5)) }
-            let host = NSHostingView(rootView: DialRing(dial: c.dial).frame(width: 360, height: 360).background(Color(white: 0.5)))
+            if track {
+                if ProcessInfo.processInfo.environment["AULA_DEMO"] != nil { c.dial.previewTrack() }
+                else { c.dial.refreshNowPlaying(); RunLoop.main.run(until: Date().addingTimeInterval(1.5)) }
+            }
+            let host = NSHostingView(rootView: DialRing(dial: c.dial).frame(width: 360, height: 360))
             host.frame = NSRect(x: 0, y: 0, width: 360, height: 360)
             let window = NSWindow(contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
+            window.isOpaque = false
+            window.backgroundColor = .clear
             window.contentView = host
             RunLoop.main.run(until: Date().addingTimeInterval(0.4))
             guard let rep = host.bitmapImageRepForCachingDisplay(in: host.bounds) else { return 1 }
