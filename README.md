@@ -1,17 +1,17 @@
 # Aula Lights
 
-A small, native Mac app for the **AULA F75** keyboard. Control its lighting, make it react to your typing, and give it a proper Mac layout. AULA only ships a Windows driver; this fills the gap.
+A small, free Mac app that makes the **AULA F75 a proper Mac keyboard**. AULA's driver is Windows-only, so on a Mac the F75 types like a Windows keyboard: Alt where ⌘ Command should be, Win where ⌥ Option should be. Aula Lights swaps them with one switch, on the AULA only, and keeps it that way across reconnects and restarts. It also controls the lighting and turns the knob into a dial.
 
 ![Effects](docs/effects.png)
 
 ## What it does
 
+- **Mac layout, the main reason this exists.** One switch makes Alt act as ⌘ Command and Win as ⌥ Option, the way a Mac keyboard is laid out. Only the AULA changes (your MacBook's keyboard doesn't), it works over the cable, the 2.4 GHz receiver and Bluetooth, and it re-applies itself every time the keyboard reconnects. Switch back to Windows any time.
 - **Built-in effects.** All 18 of the keyboard's own lighting effects, with colour, brightness and speed. Changes are saved on the keyboard, so they stay after you unplug.
 - **Typing ripple.** Every key you press sends a ring of light across the board. Tune intensity, reach, speed, ring width and echo rings.
 - **Heatmap.** Keys warm up the more you use them and cool down when you don't.
 - **Whack-a-key.** A 30-second game: a key lights up, you hit it. Combos, a countdown and a best score.
 - **The knob as a dial.** Optional. Click the knob to open a ring on screen: Apps (your Dock), Volume, Keyboard lights, Screen brightness, Tracks and Play/Pause. Pointing at Tracks or Play/Pause shows what's playing in any app (Arc, Spotify, Music…); turning with Tracks skips one song per turn. Turn to choose, click to pick; turning while the ring is closed does the chosen tool. Double-click mutes. Whenever the app isn't running, the knob is plain volume again.
-- **Mac layout.** One switch swaps Alt and Win so they act as Command and Option, like a Mac keyboard. It only affects the AULA, and it re-applies itself after every reconnect.
 - **Moods.** One-click looks (Studio, Arc reactor, Ember, Aurora, Nightfall). Hover any effect or mood to preview it on screen first.
 - **Themes.** Dark or Light (or Auto, following your Mac), six accent colours, and a switch for the ambient touches. The drawn keyboard always keeps its real colours.
 - **Keyboard shortcuts.** Cmd-1 to Cmd-4 switch modes, arrow keys change the effect and brightness, `?` shows them all.

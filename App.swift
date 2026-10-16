@@ -1226,7 +1226,7 @@ struct WelcomeView: View {
                         Text("Aula").font(Typeface.display(44, italic: true)).foregroundStyle(Color.accent)
                     }
                     .foregroundStyle(Ink.primary)
-                    Text("Two quick things and your F75 is ready.")
+                    Text("Three quick things and your F75 is ready.")
                         .font(Typeface.text(14)).foregroundStyle(Ink.secondary)
                 }
 
@@ -1242,6 +1242,23 @@ struct WelcomeView: View {
                             TextAction("Open Input Monitoring") { c.openPermissionSettings() }
                             TextAction("Reopen Aula Lights") { c.relaunch() }
                         }
+                    }
+                }
+
+                step(3, "Make it a Mac keyboard",
+                     detail: c.macLayout ? "Done. Alt now acts as ⌘ Command and Win as ⌥ Option, on the AULA only."
+                                         : "Swap Alt and Win so they work like ⌘ Command and ⌥ Option. Only the AULA changes, and you can switch back any time from the top bar.",
+                     done: c.macLayout) {
+                    HStack(spacing: 18) {
+                        HStack(spacing: 8) {
+                            keycap("Alt"); Image(systemName: "arrow.right").font(.system(size: 10, weight: .semibold)).foregroundStyle(Ink.tertiary); keycap("⌘")
+                        }
+                        HStack(spacing: 8) {
+                            keycap("Win"); Image(systemName: "arrow.right").font(.system(size: 10, weight: .semibold)).foregroundStyle(Ink.tertiary); keycap("⌥")
+                        }
+                        Spacer(minLength: 8)
+                        TextTabs(options: [(true, "Mac"), (false, "Windows")],
+                                 selection: Binding(get: { c.macLayout }, set: { c.setLayout(mac: $0) }), size: 12.5)
                     }
                 }
 
@@ -1264,6 +1281,14 @@ struct WelcomeView: View {
             .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(Color.hairline))
             .shadow(color: .black.opacity(0.7), radius: 50, y: 20)
         }
+    }
+
+    /// A small keycap, for showing which keys swap.
+    private func keycap(_ label: String) -> some View {
+        Text(label).font(Typeface.text(11, weight: .semibold)).foregroundStyle(Color.keycapLegend)
+            .frame(minWidth: 30, minHeight: 26).padding(.horizontal, 4)
+            .background(RoundedRectangle(cornerRadius: 5).fill(Color(hex: 0x2A2B31)))
+            .overlay(RoundedRectangle(cornerRadius: 5).strokeBorder(Color.white.opacity(0.08)))
     }
 
     private func step<Extra: View>(_ n: Int, _ title: String, detail: String, done: Bool, @ViewBuilder extra: () -> Extra) -> some View {
