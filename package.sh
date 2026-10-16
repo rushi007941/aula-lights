@@ -13,27 +13,24 @@ trap 'rm -rf "$STAGE"' EXIT
 cp -R dist/AulaLights.app "$STAGE/Aula Lights.app"
 ln -s /Applications "$STAGE/Applications"
 cat > "$STAGE/Read Me First.txt" <<'TXT'
-AULA LIGHTS for the AULA F75 keyboard
+AULA LIGHTS: make your AULA F75 work like a real Mac keyboard
 
 1. Drag "Aula Lights" onto the Applications folder.
 
-2. Open it. The first time, macOS will say it can't check the app, because it isn't
-   from the App Store. Click Done, then open System Settings > Privacy & Security,
-   scroll down, and click "Open Anyway" next to Aula Lights. You only do this once.
+2. Open Aula Lights from Applications. Your Mac will say it can't check the app,
+   because it isn't from the App Store. Click Done.
 
-3. A short setup screen asks you to connect the keyboard (USB-C cable or 2.4 GHz
-   receiver) and to allow Input Monitoring. The keyboard's lighting controls share a
-   connection with its keys, so macOS asks for this. Key presses are only used to draw
-   the lights; nothing is saved or sent anywhere.
+3. Open System Settings > Privacy & Security, scroll down, and click "Open Anyway"
+   next to Aula Lights. You only do this once.
 
-Optional: "Mac" in the top bar makes Alt act as Command and Win as Option, and the dial
-icon turns the knob into an on-screen dial. Both install a small background helper the
-first time you switch them on.
+4. The app then shows three quick steps:
+   - Connect the keyboard (USB-C cable or the 2.4 GHz wireless receiver).
+   - Allow keyboard access when your Mac asks.
+   - Choose "Mac" so Alt works as Command and Win works as Option.
 
-Lighting changes need the USB-C cable or the 2.4 GHz receiver; over Bluetooth the
-keyboard doesn't share enough of its settings to change them safely.
+To go back to the original keys, click "Windows" at the top right of the app.
 
-Unofficial; not affiliated with AULA. Use at your own risk.
+Free. Not made by or affiliated with AULA.
 TXT
 
 DMG="dist/Aula-Lights-$VERSION.dmg"

@@ -62,6 +62,9 @@ enum Effect: Int, CaseIterable, Identifiable {
     // KB.ini last LedOpt column: whether the effect takes a single chosen colour.
     var supportsColor: Bool { [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18].contains(rawValue) }
 
+    /// Effects that stay dark until you type.
+    var reactsToTyping: Bool { self == .ripplesShining || self == .reaction }
+
     static func parse(_ text: String) -> Effect? {
         if let n = Int(text) { return Effect(rawValue: n) }
         let key = { (s: String) in s.lowercased().filter { $0.isLetter } }
@@ -278,8 +281,9 @@ final class F75 {
         if target.effect != .off {
             let b = F75.brightnessByte(target.effect), f = F75.flagsByte(target.effect)
             settings[b] = UInt8(min(max(target.brightness, 0), 9))
-            var low = settings[f] & 0x0F
-            if target.effect.supportsColor { low = target.rainbow ? 7 : 0 }
+            // Low bits 7 = multicolour. Effects with their own colours (Rainbow, Windmill,
+            // Waterfall, Blossoming) need it on, or they show one colour or nothing.
+            let low: UInt8 = target.effect.supportsColor ? (target.rainbow ? 7 : 0) : 7
             settings[f] = UInt8(min(max(target.speed, 0), 4)) << 4 | low
         }
 
@@ -366,6 +370,15 @@ enum CLI {
                 for r in WirelessLink.liveMessage([(RGB(r: 0, g: 0xFF, b: 0xFF), [0x37])]) { print(hex(r)) }
                 for r in WirelessLink.liveMessage([(RGB(r: 0, g: 0, b: 0xFF), [0x24, 0x2A])]) { print(hex(r)) }
                 for r in WirelessLink.liveMessage([(RGB(r: 0, g: 0xFF, b: 0xFF), [0x43]), (RGB(r: 0xFF, g: 0xFF, b: 0), [0x27])]) { print(hex(r)) }
+            case "dump-settings":
+                // Read-only: each effect's stored brightness and flags (speed << 4 | low bits).
+                let kb = try F75.open()
+                let raw = try kb.readSettings()
+                print("active effect: \(raw[F75.effectByte])  custom flag: \(raw[F75.customFlagByte])")
+                for e in Effect.builtIn {
+                    let b = raw[F75.brightnessByte(e)], f = raw[F75.flagsByte(e)]
+                    print(String(format: "%2d %-20@ brightness %d  speed %d  low bits %d", e.rawValue, e.title, b, f >> 4, f & 0x0F))
+                }
             case "probe-wireless":
                 // Read-only: asks the receiver or the Bluetooth keyboard for its settings, prints the replies.
                 let link = try WirelessLink.open()

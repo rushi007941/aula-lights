@@ -134,7 +134,9 @@ enum EffectPreview {
             case .retroSnake, .retinueScanning:
                 let pos = (tt * 5).truncatingRemainder(dividingBy: 20) - 2
                 v = 0.05 + exp(-pow(k.x - pos, 2) / 1.5)
-            default:  // twinkles, raindrops, ripples, reaction…
+            case .ripplesShining, .reaction:
+                v = 0.05  // dark until you type, like the real keyboard
+            default:  // twinkles, raindrops, flashes…
                 let seed = sin(Double(k.led) * 12.9898) * 43758.5453
                 v = 0.08 + pow(max(0, sin(tt * 1.7 + (seed - floor(seed)) * 40)), 10)
             }
@@ -458,8 +460,8 @@ final class Controller: ObservableObject {
             let list = Effect.builtIn
             let i = list.firstIndex(of: state.effect) ?? 0
             switch e.keyCode {
-            case 123: state.effect = list[(i - 1 + list.count) % list.count]
-            case 124: state.effect = list[(i + 1) % list.count]
+            case 123: pick(list[(i - 1 + list.count) % list.count])
+            case 124: pick(list[(i + 1) % list.count])
             case 126: state.brightness = min(9, state.brightness + 1)
             case 125: state.brightness = max(0, state.brightness - 1)
             default: break
@@ -515,6 +517,16 @@ final class Controller: ObservableObject {
             }
         }
         return colors
+    }
+
+    /// Choose an effect. A brightness of 0 would make it look dead, so lift it to 6.
+    func pick(_ effect: Effect) {
+        var s = state
+        s.effect = effect
+        if s.brightness == 0 { s.brightness = 6 }
+        lightsOff = false
+        state = s
+        if effect.reactsToTyping { showToast("\(effect.title) lights up as you type") }
     }
 
     func applyMood(_ mood: Mood) {
@@ -783,7 +795,7 @@ struct EffectList: View {
         LazyVGrid(columns: columns, alignment: .leading, spacing: 9) {
             ForEach(Effect.builtIn) { effect in
                 let chosen = c.state.effect == effect && !c.lightsOff
-                Button { c.state.effect = effect } label: {
+                Button { c.pick(effect) } label: {
                     HStack(spacing: 7) {
                         Circle().fill(Color.accent).frame(width: 4, height: 4).opacity(chosen ? 1 : 0)
                         Text(effect.title).font(Typeface.text(12.5, weight: chosen ? .semibold : .regular))
@@ -821,6 +833,11 @@ struct EffectsPanel: View {
                            range: 0...9, step: 1) { "\(Int($0))" }
                 LineSlider(title: "Speed", value: Binding(get: { Double(c.state.speed) }, set: { c.state.speed = Int($0.rounded()) }),
                            range: 0...4, step: 1) { "\(Int($0))" }
+                if c.state.effect.reactsToTyping {
+                    Text("Stays dark until you type.").font(Typeface.text(11)).foregroundStyle(Ink.tertiary)
+                } else if c.state.brightness == 0 {
+                    Text("Brightness 0 means the keys are off.").font(Typeface.text(11)).foregroundStyle(Ink.tertiary)
+                }
                 HStack(spacing: 18) {
                     MiniSwitch(title: "Live", isOn: $c.live)
                     Spacer()
